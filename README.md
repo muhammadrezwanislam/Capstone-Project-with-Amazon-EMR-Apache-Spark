@@ -8,13 +8,13 @@
 ## Introduction
 [Capital Bikeshare](https://www.capitalbikeshare.com/) is a Washington DC based bicycle-sharing system which has 4300+ bikes at 500 stations across 7 areas: Arlington, VA; Alexandria, VA; Montgomery County, MD; Prince George's County, MD; Fairfax County, VA; and the City of Falls Church. The company provides accessible and affordable transportation options for anyone in those areas, without any concern for income. 
 
-Since 2018, the company has been sharing its monthly trip data in Amazon S3 Bucket, although we can retrieve the yearly data up until 2010. As the service is growing steadily, the analytics team wants to leverage its data to create a data driven decision making process. The team also wants to integrate weather data and covid-19 related data with the trips data, both of which are publicly available. They are interested in answering questions such as a) What is the most popular destination? b) What date and time is the most popular? c) How does covid-19 impacts the business? d) does weather have an impact on the bike rentals? e) Is there any gap between the demand and supply in any of the seven locations and so on. However, within the current setup it is difficult to make sense of the data. 
-
+Since 2018, the company has been sharing its monthly trip data in Amazon S3 Bucket, although we can retrieve the yearly data up until 2010. Designed for quick trips with convenience in mind, it’s a fun and affordable way to get around.
+Their equity program allows those who qualify for certain state or federal assistance programs to sign up individually, in addition to being able to join through a Community Partner.
 
 ##### &nbsp;
 ## Goal
 
-The goal of this project is to create an ETL pipeline that extracts data from S3, stages and processes them using Apache Spark, and transforms data into a set of dimensional tables and loads them back to S3 for the analytics team to continue finding insights in trips, weather and covid-19 data. 
+The goal of this project is to create an ETL pipeline that extracts data from S3, stages and processes them using Apache Spark, and transforms data into a set of dimensional tables and loads them back to S3 for the analytics team to continue finding insights in trips, weather and covid-19 data. As the service is growing steadily, the analytics team wants to leverage its data to create a data driven decision making process. The team also wants to integrate weather data and covid-19 related data with the trips data, both of which are publicly available. They are interested in answering questions such as a) What is the most popular destination? b) What date and time is the most popular? c) How does covid-19 impacts the business? d) does weather have an impact on the bike rentals? e) Is there any gap between the demand and supply in any of the seven locations and so on. However, within the current setup it is difficult to make sense of the data. 
 
 ##### &nbsp;
 ## Project Scope
@@ -46,7 +46,7 @@ Total number of records: **128,579**
 ##### &nbsp;
 ## Schema Design 
 
-We have designed the following Star Schema after analyzing trips data, weather data and covid data. 
+We have designed the following Star Schema after analyzing trips data, weather data and covid data. The trip data is the core of the business; that is why we have decided the trip table as our fact table. Two of the dimension tables of this schema: covid table and weather table, can provide us critical information which acounts for the daily fluctuation of the business either based on weather or covid pandemic. The final dimension table: station table could also help to determine which station has the most potential to grow. 
 
 <img src="Images/Database ER diagram (crow's foot).1.0.jpeg" width="100%" alt="" title="Schema" />
 

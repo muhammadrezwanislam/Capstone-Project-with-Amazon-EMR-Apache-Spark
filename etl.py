@@ -14,6 +14,15 @@ spark.conf.set("mapreduce.fileoutputcommitter.algorithm.version", "2")
 
 
 def process_trip_data(input_data_path, output_data_path):
+	'''
+	Reads old and new trips data from S3 bucket. Combines and Creates station_table and trips_table, and stores then in another S3 bucket in parquet format. 
+	Arguments: 
+        input_data: location of the input data 
+        output_data: location of the output data 
+        
+    Returns:
+        None 
+	'''
     paths_old = osp.join(input_data_path, "old")
     paths_new = osp.join(input_data_path, "new")
 
@@ -95,9 +104,33 @@ def process_trip_data(input_data_path, output_data_path):
     # write trip_data to parquet files
     trip_data.write.partitionBy("start_station_id").mode(
         "overwrite").parquet(osp.join(output_data_path, "trip_data"))
+		
+
+def quality_checks(df):
+	# Perform quality checks here
+    """Count checks on fact and dimension table to ensure completeness of data.
+    :param df: spark dataframe to check counts on
+    """
+    total_count = df.count()
+
+    if total_count == 0:
+        print(f"Data quality check failed for {table_name} with zero records!")
+    else:
+        print(f"Data quality check passed for {table_name} with {total_count:,} records.")
+    return 0
 
 
 def process_covid_data(input_data_path, output_data_path):
+	'''
+	Reads covid data from S3 bucket. Combines and Creates covid_table and stores then in another S3 bucket in parquet format. 
+	Arguments: 
+        input_data: location of the input data 
+        output_data: location of the output data 
+        
+    Returns:
+        None 
+	'''
+	
     # Select only interested columns
     covid_data = spark.read.json(input_data_path).select(
         "dataQualityGrade", "date", "state", "death", "deathIncrease",
@@ -128,6 +161,15 @@ def process_covid_data(input_data_path, output_data_path):
 
 
 def process_weather_data(input_data_path, output_data_path):
+	'''
+	Reads weather data from S3 bucket. Creates weather table and stores then in another S3 bucket in parquet format. 
+	Arguments: 
+        input_data: location of the input data 
+        output_data: location of the output data 
+        
+    Returns:
+        None 
+	'''
     weather_data_schema = StructType([
         StructField('STATION', StringType()),
         StructField('NAME', StringType()),
