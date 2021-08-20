@@ -205,6 +205,8 @@ ssh -i <path/to/the/pem/file> -N -L 8157:<MasterPublicDnsName>:<port> hadoop@<Ma
 Open a local browser and go to http://localhost:8157
 
 
+
+
 #### Run the ETL pipeline
 
 ```sh
@@ -218,6 +220,14 @@ sudo sed -i -e '$a\export PYSPARK_PYTHON=/usr/bin/python3' /etc/spark/conf/spark
 ssh -i <path/to/the/pem/file> hadoop@<MasterPublicDnsName>
 spark-submit etl.py
 ```
+
+#### Start an AWS Redshift cluster and create tables
+
+```sh
+python redshift/start_db_on_redshift.py
+```
+
+Once you are done with the process, don't forget to delete your resources! 
 
 #### Terminate the EMR cluster
 ```sh
